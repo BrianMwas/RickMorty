@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Controller to show episodes and their details.
 final class RMEpisodeViewController: UIViewController {
 
     override func viewDidLoad() {

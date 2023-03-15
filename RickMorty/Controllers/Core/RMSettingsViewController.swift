@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Controller to change the settings.
 final class RMSettingsViewController: UIViewController {
 
     override func viewDidLoad() {
