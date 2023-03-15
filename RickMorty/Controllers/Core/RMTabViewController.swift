@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Adds controls to screens embedded in the bottom nav bar.
 final class RMTabViewController: UITabBarController {
 
     override func viewDidLoad() {
