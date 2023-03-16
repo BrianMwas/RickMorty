@@ -15,7 +15,7 @@ final class RMRequest {
     /// Query parameters
     ///
     private struct Constants  {
-        static let baseUrl = "https://rickandmortyapi.com/api/"
+        static let baseUrl = "https://rickandmortyapi.com/api"
     }
     
     /// Desired endpoint
@@ -70,4 +70,8 @@ final class RMRequest {
         self.pathComponents = pathComponents
         self.queryParameters = queryParameters
     }
+}
+
+extension RMRequest {
+    static let listCharactersRequest = RMRequest(endpoint: .character)
 }
