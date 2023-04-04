@@ -47,7 +47,7 @@ final class RMDetailViewController: UIViewController {
     
     @objc
     private func didTapShare() {
-        
+        // Handle file sharing
     }
     
     private func addConstraints() {
@@ -85,14 +85,14 @@ extension RMDetailViewController: UICollectionViewDelegate, UICollectionViewData
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterPhotoCollectionViewCell.cellIdentifier, for: indexPath) as? RMCharacterPhotoCollectionViewCell else {
                 fatalError()
             }
-            cell.backgroundColor = .systemCyan
+        
             cell.configure(with: viewModel)
             return cell
         case .information(let viewModels):
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterInfoCollectionViewCell.cellIdentifier, for: indexPath) as? RMCharacterInfoCollectionViewCell else {
                 fatalError()
             }
-            cell.backgroundColor = .systemPurple
+            
             cell.configure(with: viewModels[indexPath.row])
             return cell
         case .episodes(let viewModels):
@@ -100,7 +100,7 @@ extension RMDetailViewController: UICollectionViewDelegate, UICollectionViewData
                 fatalError()
             }
             cell.configure(with: viewModels[indexPath.row])
-            cell.backgroundColor = .systemRed
+    
             return cell
         }
     }
