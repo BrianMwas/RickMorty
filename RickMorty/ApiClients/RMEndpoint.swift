@@ -9,7 +9,7 @@ import Foundation
 
 
 /// Represents Unique endpoint
-@frozen enum RMEndpoint: String {
+@frozen enum RMEndpoint:  String, CaseIterable, Hashable {
     /// Endpoint to get character detail
     case character
     /// Endpoint to get location detail
