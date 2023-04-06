@@ -30,15 +30,17 @@ final class RMEpisodeViewController: UIViewController, RMEpisodeListViewDelegate
         ])
     }
     
-    // MARK: - RMCharacterListViewDelegate
-//    func rmEpisodeListView(_ characterListView: RMEpisodeListView, didSelectEpisode episode: RMEpisode) {
-//        // Open detail controller for that character
-//        let viewModel = RMEpisodeDetailViewModel(episode: episode)
-//        let episodeDetailVC = RMDetailViewController(viewModel: viewModel)
-//        episodeDetailVC.navigationItem.largeTitleDisplayMode = .never
-//        navigationController?.pushViewController(episodeDetailVC, animated: true)
-//    }
+    private func addSearchButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
+    }
     
+    @objc
+    private func didTapSearch() {
+        
+    }
+    
+    // MARK: - RMEpisodeListViewDelegate
+
     func rmEpisodeListView(_ episodeListView: RMEpisodeListView, didSelectEpisode episode: RMEpisode) {
 //        let viewModel = RMEpisodeDetailViewViewModel(url: URL(string: episode.url))
         let episodeDetailVC = RMEpisodeDetailViewController(url: URL(string: episode.url))
