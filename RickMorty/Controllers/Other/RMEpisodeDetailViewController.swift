@@ -8,7 +8,9 @@
 import UIKit
 
 /// VC used to show details about an episode
-final class RMEpisodeDetailViewController: UIViewController, RMEpisodeDetailViewViewModelDelegate {
+final class RMEpisodeDetailViewController: UIViewController, RMEpisodeDetailViewViewModelDelegate, RMEpisodeDetailViewDelegate {
+    
+    
     private let viewModel: RMEpisodeDetailViewViewModel
     
     private let detailView = RMEpisodedetailView()
@@ -27,8 +29,7 @@ final class RMEpisodeDetailViewController: UIViewController, RMEpisodeDetailView
         super.viewDidLoad()
         title = "Episode"
         view.addSubview(detailView)
-        
-        
+        detailView.delegate = self
         addConstraints()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
         viewModel.delegate = self
@@ -49,6 +50,12 @@ final class RMEpisodeDetailViewController: UIViewController, RMEpisodeDetailView
         
     }
     
+    func rmEpisodedetailView(_ detailView: RMEpisodedetailView, didSelect character: RMCharacter) {
+        let vc = RMDetailViewController(viewModel: .init(character: character))
+        vc.title = character.name
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
+    }
     // MARK: - Delegate
     func didFetchEpisodeDetails() {
         detailView.configure(with: viewModel)

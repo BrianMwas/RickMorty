@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol RMEpisodeDetailViewDelegate: AnyObject {
+    func rmEpisodedetailView(_ detailView: RMEpisodedetailView, didSelect character: RMCharacter)
+}
+
 final class RMEpisodedetailView: UIView {
+    public weak var delegate: RMEpisodeDetailViewDelegate?
+    
     private var viewModel: RMEpisodeDetailViewViewModel? {
         didSet {
             spinner.stopAnimating()
@@ -140,6 +146,22 @@ extension RMEpisodedetailView: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
+        guard let viewModel = viewModel else {
+            fatalError()
+        }
+        
+        let sections = viewModel.cellViewModels
+        let sectionType = sections[indexPath.section]
+        
+        switch sectionType {
+        case.information:
+            break
+        case .characters:
+            guard let character = viewModel.character(at: indexPath.row) else {
+                return
+            }
+            delegate?.rmEpisodedetailView(self, didSelect: character)
+        }
     }
 }
 
@@ -164,7 +186,7 @@ extension RMEpisodedetailView {
             heightDimension: .fractionalHeight(1)))
         
         item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(100)), subitems: [item])
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(80)), subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         return section
     }
