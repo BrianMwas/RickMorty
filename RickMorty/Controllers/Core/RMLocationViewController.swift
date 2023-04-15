@@ -8,7 +8,7 @@
 import UIKit
 
 /// Controller to show location information.
-final class RMLocationViewController: UIViewController {
+final class RMLocationViewController: UIViewController, RMLocationViewViewDelegate {
     
     private let primaryView = RMLocationView()
     
@@ -22,15 +22,12 @@ final class RMLocationViewController: UIViewController {
         title = "Location"
         addSearchButton()
         addConstraints()
+        viewModel.delegate = self
+        viewModel.fetchLocations()
     }
     
     private func addSearchButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
-    }
-    
-    @objc
-    private func didTapSearch() {
-        
     }
     
     private func addConstraints() {
@@ -40,5 +37,15 @@ final class RMLocationViewController: UIViewController {
             primaryView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             primaryView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+    
+    @objc
+    private func didTapSearch() {
+        
+    }
+    
+    // MARK: - Location View delegate
+    func didFetchInitialLocations() {
+        primaryView.configure(with: viewModel)
     }
 }
