@@ -29,8 +29,6 @@ class RMSearchViewController: UIViewController {
         fatalError("Unsupported")
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Search"

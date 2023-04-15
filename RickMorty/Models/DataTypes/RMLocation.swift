@@ -8,7 +8,7 @@
 import Foundation
 
 /// Location model 
-struct Location: Codable {
+struct RMLocation: Codable {
     let id: String
     let name: String
     let type: String
