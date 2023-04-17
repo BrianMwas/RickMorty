@@ -31,6 +31,14 @@ final class RMLocationViewViewModel {
     
     public private(set) var cellViewModels: [RMLocationTableViewCellViewModel]  = []
     
+    public func location(at index: Int) -> RMLocation? {
+        guard index < self.locations.count, index >= 0 else {
+            return nil
+        }
+        print("We got the location at \(index)")
+        return self.locations[index]
+    }
+    
     init() {
         
     }
