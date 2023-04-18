@@ -13,6 +13,17 @@ class RMSearchViewController: UIViewController {
             case character
             case episode
             case location
+            
+            var title: String {
+                switch self {
+                case .character: // name | status | gender
+                    return "Character"
+                case .episode: // name
+                    return "Episode"
+                case .location: // name | type
+                    return "Location"
+                }
+            }
         }
         
         let type: `Type`
@@ -20,6 +31,7 @@ class RMSearchViewController: UIViewController {
     
     private let config: Config
     
+    // MARK - Init
     init(config: Config) {
         self.config = config
         super.init(nibName: nil, bundle: nil)
@@ -29,8 +41,10 @@ class RMSearchViewController: UIViewController {
         fatalError("Unsupported")
     }
     
+    
+    // NARK: - Lifecycle Owner
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Search"
+        title = config.type.title
     }
 }
