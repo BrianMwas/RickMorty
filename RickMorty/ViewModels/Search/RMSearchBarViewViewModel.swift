@@ -7,6 +7,8 @@
 
 import Foundation
 
-struct RMSearchBarViewViewModel {
-    
+final class RMSearchBarViewViewModel {
+    init() {
+        
+    }
 }

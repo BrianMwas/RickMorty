@@ -5,10 +5,9 @@
 //  Created by Brian on 18/04/2023.
 //
 
-import Foundation
+import UIKit
 
-final class RMNoSearchBarViewViewModel {
-    init() {
-        
-    }
+struct RMNoSearchBarViewViewModel {
+    let title = "No Search Results"
+    let image = UIImage(systemName: "magnifyingglass.circle")
 }

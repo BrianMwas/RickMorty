@@ -28,12 +28,16 @@ class RMSearchViewController: UIViewController {
         
         let type: `Type`
     }
+        
+    private let searchView: RMSearchView
     
-    private let config: Config
+    private var viewModel: RMSearchViewViewModel
     
     // MARK - Init
     init(config: Config) {
-        self.config = config
+        let vm = RMSearchViewViewModel(config: config)
+        self.viewModel = vm
+        self.searchView = .init(frame: .zero, viewModel: RMSearchViewViewModel(config: config))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -41,10 +45,26 @@ class RMSearchViewController: UIViewController {
         fatalError("Unsupported")
     }
     
-    
     // NARK: - Lifecycle Owner
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = config.type.title
+        title = viewModel.config.type.title
+        view.addSubview(searchView)
+        addConstraints()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Search", style: .done, target: self, action: #selector(didTapExecuteSearch))
+    }
+    
+    @objc
+    private func didTapExecuteSearch() {
+        // viewModel.executeSearch()
+    }
+    
+    private func addConstraints() {
+        NSLayoutConstraint.activate([
+            searchView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            searchView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            searchView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
     }
 }
