@@ -22,6 +22,7 @@ final class RMEpisodeViewController: UIViewController, RMEpisodeListViewDelegate
     private func setupView() {
         episodeListView.delegate = self
         view.addSubview(episodeListView)
+        addSearchButton()
         NSLayoutConstraint.activate([
             episodeListView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             episodeListView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
