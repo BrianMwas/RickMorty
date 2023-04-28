@@ -38,7 +38,7 @@ class RMSearchViewController: UIViewController {
     init(config: Config) {
         let vm = RMSearchViewViewModel(config: config)
         self.viewModel = vm
-        self.searchView = .init(frame: .zero, viewModel: RMSearchViewViewModel(config: config))
+        self.searchView = .init(frame: .zero, vm: vm)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -62,7 +62,7 @@ class RMSearchViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        super.viewDidDisappear(animated)
         searchView.presentKeyboard()
     }
     private func addConstraints() {
@@ -72,7 +72,6 @@ class RMSearchViewController: UIViewController {
             searchView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             searchView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
-        
     }
 }
 
