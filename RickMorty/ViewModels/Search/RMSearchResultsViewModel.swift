@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+enum RMSearchResultsViewModel {
+    case characters([RMCharacterCollectionViewCellViewModel])
+    case locations([RMLocationTableViewCellViewModel])
+    case episodes([RMCharacterEpisodeViewCellViewModel])
+}
