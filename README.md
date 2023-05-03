@@ -28,7 +28,7 @@ To run the app locally:
 
 1. Clone the repository to your local machine.
 2. Run `pod install` to install the necessary dependencies.
-3. Open `RickAndMorty.xcworkspace` to open the project in Xcode.
+3. Open `RickMorty.xcworkspace` to open the project in Xcode.
 4. Build and run the app in the simulator or on a physical device.
 
 ## Future Improvements
