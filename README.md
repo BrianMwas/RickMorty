@@ -47,6 +47,3 @@ To run the app locally:
   <img src="https://user-images.githubusercontent.com/42889128/236203976-9fae67c6-34bc-408a-92dd-b086e3667e56.png" width="200"/>
 </p>
 
-## Conclusion
-
-This app showcases my proficiency in building iOS apps with both UIKit and SwiftUI, as well as my ability to implement the MVVM design pattern. It demonstrates my knowledge of networking with Alamofire and consuming APIs to build engaging applications. The complex filtering feature makes it easier for users to find exactly what they're looking for, and the pagination feature allows them to explore large sets of data. Feel free to explore the app and provide feedback
