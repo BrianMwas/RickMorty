@@ -86,7 +86,6 @@ final class RMCharacterEpisodeCollectionViewCell: UICollectionViewCell {
     
     public func configure(with viewModel: RMCharacterEpisodeViewCellViewModel) {
         viewModel.registerForData { [weak self] data in
-            print("We have some data \(data.air_date)")
             self?.airDateLabel.text = "Aired on" + data.air_date
             self?.nameLabel.text = data.name
             self?.seasonLabel.text = "Episode: " + data.episode

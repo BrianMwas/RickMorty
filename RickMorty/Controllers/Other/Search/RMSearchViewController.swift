@@ -54,7 +54,7 @@ class RMSearchViewController: UIViewController {
     init(config: Config) {
         let vm = RMSearchViewViewModel(config: config)
         self.viewModel = vm
-        self.searchView = .init(frame: .zero, vm: vm)
+        self.searchView = RMSearchView(frame: .zero, vm: vm)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -81,6 +81,7 @@ class RMSearchViewController: UIViewController {
         super.viewDidDisappear(animated)
         searchView.presentKeyboard()
     }
+    
     private func addConstraints() {
         NSLayoutConstraint.activate([
             searchView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -93,6 +94,14 @@ class RMSearchViewController: UIViewController {
 
 
 extension RMSearchViewController: RMSearchViewDelegate {
+    func rmSearchView(_ resultsView: RMSearchView, didSelectEpisode episode: RMEpisode) {
+        print("Go to episode controller")
+    }
+    
+    func rmSearchView(_ resultsView: RMSearchView, didSelectCharacter character: RMCharacter) {
+        print("Go to character detail view controller")
+    }
+    
     func rmSearchView(_ searchView: RMSearchView, didSelectOption option: RMSearchBarViewViewModel.DynamicOption) {
         let vc = RMSearchOptionPickerViewController(option: option) { [weak self] selection in
             DispatchQueue.main.async {
@@ -102,5 +111,11 @@ extension RMSearchViewController: RMSearchViewDelegate {
         vc.sheetPresentationController?.detents = [.medium()]
         vc.sheetPresentationController?.prefersGrabberVisible = true
         present(vc, animated: true)
+    }
+    
+    func rmSearchView(_ resultsView: RMSearchView, didSelectLocation location: RMLocation) {
+        let vc = RMLocationDetailViewController(location: location)
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -142,6 +142,7 @@ final class RMSearchViewViewModel {
                 )
             }))
         } else if let episodesResults = model as? RMGetAllEpisodesResponse {
+            print("We have some episode data")
             resultsVM = .episodes(episodesResults.results.compactMap({ episode in
                 return RMCharacterEpisodeViewCellViewModel(episodeDataUrl: URL(string: episode.url ))
             }))
@@ -152,7 +153,7 @@ final class RMSearchViewViewModel {
         }
         
         if let results = resultsVM {
-            print("results are here")
+            self.searchResultModel = model
             self.searchResultsHandler?(results)
         } else {
             // Fallback error
@@ -163,6 +164,27 @@ final class RMSearchViewViewModel {
     
     public func set(query text: String) {
         self.searchText = text
+    }
+    
+    public func locationSearchResult(at index: Int) -> RMLocation? {
+        guard let searchModel = searchResultModel as? RMGetLocationsResponse else {
+            return nil
+        }
+        return searchModel.results[index]
+    }
+    
+    public func episodeSearchResult(at index: Int) -> RMEpisode? {
+        guard let searchModel = searchResultModel as? RMGetAllEpisodesResponse else {
+            return nil
+        }
+        return searchModel.results[index]
+    }
+    
+    public func characterSearchResult(at index: Int) -> RMCharacter? {
+        guard let searchModel = searchResultModel as? RMGetAllCharactersResponse else {
+            return nil
+        }
+        return searchModel.results[index]
     }
 }
 

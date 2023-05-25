@@ -78,9 +78,7 @@ final class RMCharacterListView: UIView {
     private func setupCollectionView() {
         collectionView.dataSource = viewModel
         collectionView.delegate = viewModel
-        DispatchQueue.main.asyncAfter(deadline: .now()+2, execute: {
-            
-        })
+        
     }
 }
 

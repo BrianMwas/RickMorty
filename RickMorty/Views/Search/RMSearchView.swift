@@ -9,6 +9,10 @@ import UIKit
 
 protocol RMSearchViewDelegate: AnyObject {
     func rmSearchView(_ searchView: RMSearchView, didSelectOption option: RMSearchBarViewViewModel.DynamicOption)
+    
+    func rmSearchView(_ resultsView: RMSearchView, didSelectLocation location: RMLocation)
+    func rmSearchView(_ resultsView: RMSearchView, didSelectEpisode episode: RMEpisode)
+    func rmSearchView(_ resultsView: RMSearchView, didSelectCharacter character: RMCharacter)
 }
 
 final class RMSearchView: UIView {
@@ -41,6 +45,8 @@ final class RMSearchView: UIView {
         searchInputView.delegate = self
         
         setupHandlers(viewModel: viewModel)
+        
+        resultsView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -58,7 +64,6 @@ final class RMSearchView: UIView {
                 self?.noResultsView.isHidden = true
                 self?.resultsView.isHidden = false
             }
-    
         }
         
         viewModel.registerNoResultsHandler { [weak self] in
@@ -133,3 +138,26 @@ extension RMSearchView: RMSearchBarViewDelegate {
     }
 }
 
+extension RMSearchView: RMSearchResultsViewDelegate {
+    func rmSearchResultsView(_ resultsView: RMSearchResultsView, didTapLocationAt index: Int) {
+        guard let locationModel = viewModel.locationSearchResult(at: index) else {
+            return
+        }
+        delegate?.rmSearchView(self, didSelectLocation: locationModel)
+    }
+    
+    func rmSearchResultsView(_ resultsView: RMSearchResultsView, didTapEpisodeAt index: Int) {
+        guard let episodeModel = viewModel.episodeSearchResult(at: index) else {
+            return
+        }
+        delegate?.rmSearchView(self, didSelectEpisode: episodeModel)
+    }
+    
+    func rmSearchResultsView(_ resultsView: RMSearchResultsView, didTapCharacterAt index: Int) {
+        guard let characterModel = viewModel.characterSearchResult(at: index) else {
+           return
+        }
+        
+        delegate?.rmSearchView(self, didSelectCharacter: characterModel)
+    }
+}
