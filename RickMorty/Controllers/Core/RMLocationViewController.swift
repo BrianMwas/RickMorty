@@ -10,6 +10,7 @@ import UIKit
 /// Controller to show location information.
 final class RMLocationViewController: UIViewController, RMLocationViewViewDelegate, RMLocationViewDelegate {
     
+    
     private let primaryView = RMLocationView()
     
     private let viewModel = RMLocationViewViewModel()
@@ -50,12 +51,15 @@ final class RMLocationViewController: UIViewController, RMLocationViewViewDelega
     // MARK: - RMLocationViewDelegate
     func rmLocationView(_ locationView: RMLocationView, didSelect location: RMLocation) {
         let vc = RMLocationDetailViewController(location: location)
-        print("We have the location details here \(location)")
         navigationController?.pushViewController(vc, animated: true)
     }
     
     // MARK: - Location View delegate
     func didFetchInitialLocations() {
         primaryView.configure(with: viewModel)
+    }
+    
+    func didLoadMoreLocations(with newIndexPaths: [IndexPath]) {
+        print("Load more locations")
     }
 }
