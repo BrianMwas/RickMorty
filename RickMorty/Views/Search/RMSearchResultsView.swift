@@ -17,7 +17,7 @@ protocol RMSearchResultsViewDelegate: AnyObject {
 final class RMSearchResultsView: UIView {
     
     weak var delegate: RMSearchResultsViewDelegate?
-    private var viewModel: RMSearchResultsViewModel? {
+    private var viewModel: RMSearchResultsviewModel? {
         didSet {
             self.processViewModel()
         }
@@ -77,11 +77,8 @@ final class RMSearchResultsView: UIView {
         guard let viewModel = viewModel else {
             return
         }
-        print("We were processed")
-        switch viewModel {
+        switch viewModel.results {
         case .characters(let viewModels):
-            print("We have \(viewModels.count) view models")
-            
             self.collectionViewCellViewModels = viewModels
             setupCollectionView()
         case .locations(let viewModels):
@@ -125,7 +122,7 @@ final class RMSearchResultsView: UIView {
        collectionView.reloadData()
     }
     
-    public func configure(with viewModel: RMSearchResultsViewModel) {
+    public func configure(with viewModel: RMSearchResultsviewModel) {
         self.viewModel = viewModel
     }
 }
@@ -223,5 +220,38 @@ extension RMSearchResultsView: UICollectionViewDelegate, UICollectionViewDataSou
                     width: width,
                     height: 100
                 )
+    }
+}
+
+
+extension RMSearchResultsView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let viewModel = viewModel,
+                !locationViewModels.isEmpty,
+              viewModel.shouldShowLoadMoreIndicator,
+              !viewModel.isLoadingMoreResults
+        else {
+            return
+        }
+
+        Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { [weak self] t in
+            let offset = scrollView.contentOffset.y
+            let totalContentHeight = scrollView.contentSize.height
+            let totalScrollViewFixedHeight = scrollView.frame.size.height
+
+            if offset >= (totalContentHeight - totalScrollViewFixedHeight - 120) {
+                DispatchQueue.main.async {
+                    self?.showLoadingIndicator()
+                }
+                viewModel.fetchAdditionalLocations()
+            }
+            t.invalidate()
+        }
+    }
+    
+    private func showLoadingIndicator() {
+        let footer = RMTableLoadingFooterView()
+        footer.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: 100)
+        tableView.tableFooterView = footer
     }
 }

@@ -7,37 +7,6 @@
 
 import Foundation
 
-// Show search results
-// No results view
-// Kick off API request
-//final class RMSearchViewViewModel {
-//    let config: RMSearchViewController.Config
-//
-//    private var optionMap: [RMSearchBarViewViewModel.DynamicOption: String] = [:]
-//    private var optionMapUpdateBlock: (((RMSearchBarViewViewModel.DynamicOption, String)) -> Void)?
-//
-//
-//    // MARK: - Init
-//    init(config: RMSearchViewController.Config) {
-//        self.config = config
-//    }
-//
-//    // MARK: - Public
-//    public func set(value: String, for option: RMSearchBarViewViewModel.DynamicOption) {
-//        optionMap[option] = value
-//        let tuple = (option, value)
-//        print("We have an update \(tuple)")
-//        optionMapUpdateBlock?(tuple)
-//    }
-//
-//    public func registerOptionChangeBlock(
-//        _ block: @escaping ((RMSearchBarViewViewModel.DynamicOption, String)) -> Void
-//       ) {
-//           print("We were init")
-//           self.optionMapUpdateBlock = block
-//       }
-//}
-
 final class RMSearchViewViewModel {
     let config: RMSearchViewController.Config
     private var optionMap: [RMSearchBarViewViewModel.DynamicOption: String] = [:]
@@ -50,7 +19,7 @@ final class RMSearchViewViewModel {
 
     private var searchResultModel: Codable?
     
-    private var searchResultsHandler: ((RMSearchResultsViewModel) -> Void)?
+    private var searchResultsHandler: ((RMSearchResultsviewModel) -> Void)?
 
     // MARK: - Init
 
@@ -80,11 +49,15 @@ final class RMSearchViewViewModel {
         self.optionMapUpdateBlock = block
     }
     
-    public func registerSearchResultsHandler(_ block: @escaping (RMSearchResultsViewModel) -> Void) {
+    public func registerSearchResultsHandler(_ block: @escaping (RMSearchResultsviewModel) -> Void) {
         self.searchResultsHandler = block
     }
     
     public func executeSearch() {
+        
+        guard !searchText.trimmingCharacters(in: .whitespaces).isEmpty else {
+            return
+        }
         // Create Request based on filter
         var queryParams: [URLQueryItem] = [
             URLQueryItem(
@@ -123,7 +96,7 @@ final class RMSearchViewViewModel {
         RMService.shared.execute(request, expecting: type) { [weak self] result in
             switch result {
             case .success(let model):
-                self?.processSearchResults(model)
+                self?.processSearchResults(model: model)
             case .failure:
                 self?.handleNoResults()
                 break
@@ -131,8 +104,9 @@ final class RMSearchViewViewModel {
         }
     }
     
-    private func processSearchResults(_ model: Codable) {
-        var resultsVM: RMSearchResultsViewModel?
+    private func processSearchResults(model: Codable) {
+        var resultsVM: RMSearchResultsType?
+        var nextUrl: String?
         if let characterResults = model as? RMGetAllCharactersResponse {
             resultsVM = .characters(characterResults.results.compactMap({ character in
                 return RMCharacterCollectionViewCellViewModel(
@@ -141,20 +115,24 @@ final class RMSearchViewViewModel {
                     characterURL: URL(string: character.image)
                 )
             }))
+            nextUrl = characterResults.info.next
         } else if let episodesResults = model as? RMGetAllEpisodesResponse {
             print("We have some episode data")
             resultsVM = .episodes(episodesResults.results.compactMap({ episode in
                 return RMCharacterEpisodeViewCellViewModel(episodeDataUrl: URL(string: episode.url ))
             }))
+            nextUrl = episodesResults.info.next
         } else if let locationResults = model as? RMGetLocationsResponse {
             resultsVM = .locations(locationResults.results.compactMap({ location in
                 return RMLocationTableViewCellViewModel(location: location)
             }))
+            nextUrl = locationResults.info.next
         }
         
         if let results = resultsVM {
             self.searchResultModel = model
-            self.searchResultsHandler?(results)
+            let vm = RMSearchResultsviewModel(results: results, next: nextUrl)
+            self.searchResultsHandler?(vm)
         } else {
             // Fallback error
             handleNoResults()
