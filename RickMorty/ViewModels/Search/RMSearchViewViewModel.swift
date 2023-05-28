@@ -88,8 +88,6 @@ final class RMSearchViewViewModel {
         case .location:
             makeAPICall(RMGetLocationsResponse.self, request: request)
         }
-        
-        // Notify View of results, or no results.
     }
     
     private func makeAPICall<T: Codable>(_ type: T.Type, request: RMRequest) {
