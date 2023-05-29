@@ -114,7 +114,8 @@ final class RMSearchResultsviewModel {
                             characterURL: URL(string: $0.url)
                         )
                     })
-                    var newResults = existingResults + additionalCharacters
+                    let newResults = existingResults + additionalCharacters
+                    print("We have the new changes \(newResults.count)")
                     strongSelf.results = .characters(newResults)
                     DispatchQueue.main.async {
                         strongSelf.isLoadingMoreResults = false
@@ -142,7 +143,7 @@ final class RMSearchResultsviewModel {
                     let additionalEpisodes = moreResults.compactMap({
                         return RMCharacterEpisodeViewCellViewModel(episodeDataUrl: URL(string: $0.url))
                     })
-                    var newResults = existingEpisodes + additionalEpisodes
+                    let newResults = existingEpisodes + additionalEpisodes
                     strongSelf.results = .episodes(newResults)
                     DispatchQueue.main.async {
                         strongSelf.isLoadingMoreResults = false
